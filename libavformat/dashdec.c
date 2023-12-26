@@ -479,6 +479,8 @@ static char *get_content_url(xmlNodePtr *baseurl_nodes,
     char *url = NULL;
     char *tmp_str = av_mallocz(max_url_size);
 
+    memset(tmp_str, 0, max_url_size);
+
     if (!tmp_str)
         return NULL;
 
@@ -488,8 +490,7 @@ static char *get_content_url(xmlNodePtr *baseurl_nodes,
             baseurl_nodes[i]->children->type == XML_TEXT_NODE) {
             text = xmlNodeGetContent(baseurl_nodes[i]->children);
             if (text) {
-                memset(tmp_str, 0, max_url_size);
-                ff_make_absolute_url(tmp_str, max_url_size, "", text);
+                ff_make_absolute_url(tmp_str, max_url_size, tmp_str, text);
                 xmlFree(text);
             }
         }
