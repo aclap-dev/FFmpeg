@@ -805,8 +805,10 @@ static int resolve_content_path(AVFormatContext *s, const char *url, int *max_ur
                 memset(p + 1, 0, strlen(p));
             }
             av_strlcat(tmp_str, text + start, tmp_max_url_size);
-            xmlNodeSetContent(baseurl_nodes[i], tmp_str);
+            xmlChar *escaped = xmlEncodeSpecialChars(NULL, escaped);
+            xmlNodeSetContent(baseurl_nodes[i], escaped);
             updated = 1;
+            xmlFree(escaped);
             xmlFree(text);
         }
     }
